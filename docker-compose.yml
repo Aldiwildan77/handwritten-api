@@ -9,4 +9,5 @@ services:
     ports: 
       - 5015:5015
     command: npm start
-    
+    volumes:
+      - /home/doccano/handwritten/uploads:/var/www/handwritten/uploads

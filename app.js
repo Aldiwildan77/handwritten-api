@@ -8,7 +8,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5015;
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const DATASET_PATH = '/your/root/folder/uploads';
+const DATASET_PATH = path.dirname('/var/www/handwritten/uploads/');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

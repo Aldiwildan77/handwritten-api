@@ -8,7 +8,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5015;
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const DATASET_PATH = 'yourpath';
+const DATASET_PATH = 'D:\\PKL\\Projects\\handwritten-api';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -88,6 +88,13 @@ app.get('/api/dataset/checker', (req, res, next) => {
       const error = new Error('Link should has filename query');
       error.statusCode = 422;
       return next(error);
+    }
+
+    if (!fs.existsSync(directoryPath + filename)) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'Filename accepted',
+      });
     }
 
     let { length } = fs.readdirSync(directoryPath + filename);

@@ -81,16 +81,16 @@ app.post('/api/dataset', (req, res, next) => {
 });
 
 app.get('/api/dataset/checker', (req, res, next) => {
-  const { fileName } = req.query;
+  const { filename } = req.query;
   const directoryPath = path.join(DATASET_PATH + '/uploads/');
   try {
-    if (!fileName) {
-      const error = new Error('Link should has fileName query');
+    if (!filename) {
+      const error = new Error('Link should has filename query');
       error.statusCode = 422;
       return next(error);
     }
 
-    let { length } = fs.readdirSync(directoryPath + fileName);
+    let { length } = fs.readdirSync(directoryPath + filename);
     if (length == 10) {
       const error = new Error('Directory is full');
       error.statusCode = 400;

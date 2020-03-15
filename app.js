@@ -8,7 +8,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5015;
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const DATASET_PATH = 'D:\\PKL\\Projects\\handwritten-api';
+const DATASET_PATH = path.dirname('/var/www/handwritten/uploads/');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -90,24 +90,24 @@ app.get('/api/dataset/checker', (req, res, next) => {
       return next(error);
     }
 
-    if (!fs.existsSync(directoryPath + filename)) {
-      return res.status(200).json({
+    if (fs.existsSync(directoryPath + filename)){
+      let result = fs.readdirSync(directoryPath + filename);
+      if (result.length >= 10) {
+        const error = new Error('Directory is full');
+        error.statusCode = 400;
+        return next(error);
+      } else {
+        res.status(200).json({
+          status: 'success',
+          message: 'Filename accepted',
+        }); 
+      }
+    } else {
+      res.status(200).json({
         status: 'success',
         message: 'Filename accepted',
       });
     }
-
-    let { length } = fs.readdirSync(directoryPath + filename);
-    if (length == 10) {
-      const error = new Error('Directory is full');
-      error.statusCode = 400;
-      return next(error);
-    }
-
-    return res.status(200).json({
-      status: 'success',
-      message: 'Filename accepted',
-    });
   } catch (err) {
     const error = new Error('Internal Server Error');
     next(error);
@@ -156,6 +156,8 @@ app.get('/api/dataset', (req, res, next) => {
 
     res.status(200).json({
       status: 'success',
+      message: 'Successfully fetch dataset',
+      length: result.length,
       data: resultWithLength,
     });
   } catch (err) {

@@ -157,7 +157,7 @@ app.get('/api/dataset', (req, res, next) => {
     res.status(200).json({
       status: 'success',
       message: 'Successfully fetch dataset',
-      length: result.length,
+      length: resultWithLength.length,
       data: resultWithLength,
     });
   } catch (err) {

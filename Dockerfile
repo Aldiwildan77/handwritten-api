@@ -14,6 +14,4 @@ ENV NODE_ENV="production"
 
 EXPOSE ${PORT}
 
-RUN echo "Workdir path is $PWD"
-
 CMD ["npm", "start"]

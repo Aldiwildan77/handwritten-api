@@ -11,3 +11,4 @@ services:
     command: npm start
     volumes:
       - /home/doccano/handwritten/uploads:/var/www/handwritten/uploads
+      - /home/doccano/handwritten/models:/var/www/handwritten/models

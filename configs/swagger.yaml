@@ -1,0 +1,158 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Handwritten API
+  description: Handwritten API Documentation
+host: 'localhost:5015'
+basePath: /
+schemes:
+  - http
+tags:
+  - name: Dataset
+    description: For load and store handwritten
+  - name: Model
+    description: For TFlite model purposes
+paths: 
+  /api/dataset:
+    get:
+      tags: 
+        - Dataset
+      summary: Get All Dataset
+      description: ''
+      parameters:
+        - in: query
+          type: integer
+          name: length
+          description: Image data length
+          required: false
+        - in: query
+          type: integer
+          name: paginate
+          description: Pagination 
+          required: false
+        - in: query
+          type: integer
+          name: show
+          description: Show how many item will be shown 
+          required: false
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+        500:
+          description: Internal Server Error
+    post: 
+      tags: 
+        - Dataset
+      summary: Post One Image of Dataset
+      description: ''
+      parameters:
+        - in: formData
+          type: file
+          name: default
+          description: File of image dataset with PNG formatted
+          allowEmptyValue: false
+          required: true
+      responses:
+        200:
+          description: OK
+        500:
+          description: Internal Server Error
+  /api/dataset/checker:
+    get:
+      tags: 
+        - Dataset
+      summary: Get All Dataset
+      description: ''
+      parameters:
+        - in: query
+          type: string
+          name: filename
+          description: Dataset Filename
+          required: true
+      responses:
+        200:
+          description: OK
+        400:
+          description: Directory is full
+        422: 
+          description: Link should has filename query
+        500:
+          description: Internal Server Error
+  /api/models/latest:
+    get:
+      tags: 
+        - Model
+      summary: Get Latest Version of Model
+      description: ''
+      parameters:
+        - in: query
+          type: string
+          name: type
+          enum:
+            - word
+            - character
+          description: Model Type
+          required: true
+          default: word
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
+  /api/models/compare:
+    get:
+      tags: 
+        - Model
+      summary: Compare Version of Model
+      description: ''
+      parameters:
+        - in: query
+          type: string
+          name: filename
+          description: Model filename [word, character]
+          required: true
+          default: word_1.1.1.tflite
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not Found
+        422:
+          description: Link should has filename query
+        500:
+          description: Internal Server Error
+  /api/models/download:
+    get:
+      tags: 
+        - Model
+      summary: Download Model File
+      description: ''
+      parameters:
+        - in: query
+          type: string
+          name: version
+          description: Model version
+          required: true
+          default: 1.1.1
+        - in: query
+          type: string
+          name: type
+          enum:
+            - word
+            - character
+          description: Model Type
+          required: true
+          default: word
+      responses:
+        200:
+          description: OK
+        400:
+          description: Query can not be empty
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
